@@ -1,12 +1,19 @@
 pool:
-  # name: Default  # Use your self-hosted agent pool name
-  vmImage: 'macos-latest'
+  name: Azure Pipelines  # Use your self-hosted agent pool name
+  # vmImage: 'macos-latest'
 
 variables:
   flutterVersion: '3.5.3'  # Specify the Flutter version
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
+- task: downloadgitlabrepository@1
+  inputs:
+    connection: 'ER GitLab'
+    definition: 'xperience-layer/app/assistedsales'
+    versionSelector: 'latestSpecificBranch'
+    branch: 'develop'
+
 # Install Flutter
 - script: |
     git clone -b ${flutterVersion} --depth 1 https://github.com/flutter/flutter.git
