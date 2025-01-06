@@ -22,10 +22,10 @@ steps:
   displayName: 'Install Dependencies'
 
 # Install iOS CocoaPods Dependencies
-- script: |
-    cd ios
-    pod install
-  displayName: 'Install CocoaPods Dependencies'
+# - script: |
+#     cd ios
+#     pod install
+#   displayName: 'Install CocoaPods Dependencies'
 
 # Build iOS App Without Signing
 - script: |
