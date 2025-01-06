@@ -15,6 +15,7 @@ steps:
     definition: 'xperience-layer/app/assistedsales'
     versionSelector: 'latestSpecificBranch'
     branch: 'develop'
+  displayName: 'Pull Gitlab'
 
 # Install Flutter
 - script: |
