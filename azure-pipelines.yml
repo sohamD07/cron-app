@@ -12,7 +12,7 @@ steps:
 - task: downloadgitlabrepository@1
   inputs:
     connection: 'ER GitLab'
-    definition: 'xperience-layer/app/assistedsales'
+    definition: 'experience-layer/app/assistedsales'
     versionSelector: 'latestSpecificBranch'
     branch: 'develop'
   displayName: 'Pull Gitlab'
