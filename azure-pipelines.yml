@@ -1,5 +1,6 @@
 pool:
-  name: Default  # Use your self-hosted agent pool name
+  # name: Default  # Use your self-hosted agent pool name
+  vmImage: 'macos-latest'
 
 variables:
   flutterVersion: '3.5.3'  # Specify the Flutter version
