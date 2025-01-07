@@ -2,7 +2,7 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-  flutterVersion: '3.5.3'  # Specify the Flutter version tag
+  flutterVersion: '3.27.1'  # Specify the Flutter version tag
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
