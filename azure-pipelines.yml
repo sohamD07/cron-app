@@ -9,13 +9,13 @@ variables:
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
-- task: downloadgitlabrepository@1
-  inputs:
-    connection: 'ER GitLab'
-    definition: 'experience-layer/app/assistedsales'
-    versionSelector: 'latestSpecificBranch'
-    branch: 'develop'
-  displayName: 'Pull Gitlab'
+# - task: downloadgitlabrepository@1
+#   inputs:
+#     connection: 'ER GitLab'
+#     definition: 'experience-layer/app/assistedsales'
+#     versionSelector: 'latestSpecificBranch'
+#     branch: 'develop'
+#   displayName: 'Pull Gitlab'
 
 # Install Flutter
 - script: |
