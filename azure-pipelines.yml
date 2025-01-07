@@ -8,7 +8,7 @@ variables:
 steps:
 # Install Flutter
 - script: |
-    git clone --branch $(flutterVersion) https://github.com/flutter/flutter.git
+    git clone https://github.com/flutter/flutter.git -b $(flutterVersion) --depth 1
     echo '##vso[task.prependpath]$(Pipeline.Workspace)/flutter/bin'
     export PATH="$(Pipeline.Workspace)/flutter/bin:$PATH"
     flutter doctor
