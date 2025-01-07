@@ -23,16 +23,19 @@ steps:
 - script: flutter pub get
   displayName: 'Install Dependencies'
 
-# Build iOS IPA Without Signing
+# Build iOS App
 - script: |
     flutter build ios --release --no-codesign
-  displayName: 'Build iOS IPA (Unsigned)'
+  displayName: 'Build iOS App (Unsigned)'
 
-# Package IPA File
+# Export IPA Using xcodebuild
 - script: |
     mkdir -p $(Pipeline.Workspace)/ios-artifacts
-    cp -R build/ios/ipa/*.ipa $(Pipeline.Workspace)/ios-artifacts/
-  displayName: 'Package IPA File'
+    xcodebuild -exportArchive \
+      -archivePath build/ios/Release-iphoneos/Runner.xcarchive \
+      -exportPath $(Pipeline.Workspace)/ios-artifacts \
+      -exportOptionsPlist ios/ExportOptions.plist
+  displayName: 'Export IPA'
 
 # Publish IPA as Build Artifact
 - task: PublishBuildArtifacts@1
