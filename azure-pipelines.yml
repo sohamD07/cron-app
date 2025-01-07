@@ -1,0 +1,37 @@
+pool:
+  vmImage: 'macos-latest'
+
+variables:
+  flutterVersion: 'stable'  # Use 'stable' or a valid Flutter tag (e.g., '3.5.0')
+  buildConfiguration: 'Release'  # Build configuration (Debug, Release)
+
+steps:
+# Install Flutter
+- script: |
+    git clone --branch $(flutterVersion) --depth 1 https://github.com/flutter/flutter.git $(Pipeline.Workspace)/flutter
+    echo '##vso[task.prependpath]$(Pipeline.Workspace)/flutter/bin'
+    export PATH=$(Pipeline.Workspace)/flutter/bin:$PATH
+    chmod +x $(Pipeline.Workspace)/flutter/bin/flutter
+    flutter doctor
+  displayName: 'Install Flutter'
+
+# Clean Previous Builds
+- script: flutter clean
+  displayName: 'Clean Previous Builds'
+
+# Install Dependencies
+- script: flutter pub get
+  displayName: 'Install Dependencies'
+
+# Build Android APK
+- script: |
+    flutter build apk --release
+  displayName: 'Build Android APK'
+
+# Publish Build Artifacts
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'build/app/outputs/flutter-apk/app-release.apk'
+    artifactName: 'AndroidAPK'
+    publishLocation: 'Container'
+  displayName: 'Publish Android APK Artifact'
