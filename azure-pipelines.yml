@@ -1,25 +1,16 @@
-
-
 pool:
-  # name: Default  # Use your self-hosted agent pool name
   vmImage: 'macos-latest'
 
 variables:
-  flutterVersion: '3.5.3'  # Specify the Flutter version
+  flutterVersion: '3.5.3'  # Specify the Flutter version tag
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
-- task: downloadgitlabrepository@1
-  inputs:
-    connection: 'ER GitLab'
-    definition: 'xperience-layer/app/assistedsales'
-    versionSelector: 'latestSpecificBranch'
-    branch: 'develop'
-
 # Install Flutter
 - script: |
-    git clone -b ${flutterVersion} --depth 1 https://github.com/flutter/flutter.git
+    git clone https://github.com/flutter/flutter.git -b $(flutterVersion) --depth 1
     echo '##vso[task.prependpath]$(Pipeline.Workspace)/flutter/bin'
+    export PATH="$(Pipeline.Workspace)/flutter/bin:$PATH"
     flutter doctor
   displayName: 'Install Flutter'
 
@@ -30,12 +21,6 @@ steps:
 # Install Dependencies
 - script: flutter pub get
   displayName: 'Install Dependencies'
-
-# Install iOS CocoaPods Dependencies
-# - script: |
-#     cd ios
-#     pod install
-#   displayName: 'Install CocoaPods Dependencies'
 
 # Build iOS App Without Signing
 - script: |
