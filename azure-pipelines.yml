@@ -2,15 +2,16 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-  flutterVersion: '3.27.1'  # Specify the Flutter version tag
+  flutterVersion: 'stable'  # Use 'stable' or a valid Flutter tag (e.g., '3.5.0')
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
 # Install Flutter
 - script: |
-    git clone --branch $(flutterVersion) --depth 1 https://github.com/flutter/flutter.git
-    export PATH=$(Pipeline.Workspace)/flutter/bin:$PATH
+    git clone --branch $(flutterVersion) --depth 1 https://github.com/flutter/flutter.git $(Pipeline.Workspace)/flutter
     echo '##vso[task.prependpath]$(Pipeline.Workspace)/flutter/bin'
+    export PATH=$(Pipeline.Workspace)/flutter/bin:$PATH
+    chmod +x $(Pipeline.Workspace)/flutter/bin/flutter
     flutter doctor
   displayName: 'Install Flutter'
 
@@ -21,12 +22,6 @@ steps:
 # Install Dependencies
 - script: flutter pub get
   displayName: 'Install Dependencies'
-
-# Install iOS CocoaPods Dependencies
-# - script: |
-#     cd ios
-#     pod install
-#   displayName: 'Install CocoaPods Dependencies'
 
 # Build iOS App Without Signing
 - script: |
