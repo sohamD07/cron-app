@@ -2,7 +2,7 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-  flutterVersion: 'stable'  # Use 'stable' or a valid Flutter tag (e.g., '3.5.0')
+  flutterVersion: 'stable'  # Use 'stable' or a specific version like '3.5.0'
   buildConfiguration: 'Release'  # Build configuration (Debug, Release)
 
 steps:
@@ -28,11 +28,21 @@ steps:
     flutter build ios --release --no-codesign
   displayName: 'Build iOS App (Unsigned)'
 
-# Export IPA Using xcodebuild
+# Archive the App using Xcodebuild
+- script: |
+    mkdir -p $(Pipeline.Workspace)/ios-build
+    xcodebuild -workspace ios/Runner.xcworkspace \
+      -scheme Runner \
+      -configuration $(buildConfiguration) \
+      -archivePath $(Pipeline.Workspace)/ios-build/Runner.xcarchive \
+      archive
+  displayName: 'Archive iOS App'
+
+# Export IPA Using Xcodebuild
 - script: |
     mkdir -p $(Pipeline.Workspace)/ios-artifacts
     xcodebuild -exportArchive \
-      -archivePath build/ios/Release-iphoneos/Runner.xcarchive \
+      -archivePath $(Pipeline.Workspace)/ios-build/Runner.xcarchive \
       -exportPath $(Pipeline.Workspace)/ios-artifacts \
       -exportOptionsPlist ios/ExportOptions.plist
   displayName: 'Export IPA'
