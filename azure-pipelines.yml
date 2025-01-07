@@ -23,7 +23,21 @@ steps:
 - script: flutter pub get
   displayName: 'Install Dependencies'
 
-# Build iOS App Without Signing
+# Build iOS IPA Without Signing
 - script: |
     flutter build ios --release --no-codesign
-  displayName: 'Build iOS App (Unsigned)'
+  displayName: 'Build iOS IPA (Unsigned)'
+
+# Package IPA File
+- script: |
+    mkdir -p $(Pipeline.Workspace)/ios-artifacts
+    cp -R build/ios/ipa/*.ipa $(Pipeline.Workspace)/ios-artifacts/
+  displayName: 'Package IPA File'
+
+# Publish IPA as Build Artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Pipeline.Workspace)/ios-artifacts'
+    artifactName: 'iOSIPA'
+    publishLocation: 'Container'
+  displayName: 'Publish iOS IPA Artifact'
